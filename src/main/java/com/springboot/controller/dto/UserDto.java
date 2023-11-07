@@ -10,4 +10,5 @@ public class UserDto {
     private String nickname;
     @Alias("avatar_Url")
     private String avatar;
+    private String token;
 }

@@ -10,6 +10,7 @@ import com.springboot.exception.ServiceExpection;
 import com.springboot.mapper.UserMapper;
 import com.springboot.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.springboot.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             one.setIslogin(1);
             userMapper.updateById(one);
             BeanUtil.copyProperties(one, userDTO, true);
+            String token= TokenUtils.genToken(one.getId().toString(),one.getPassword());
+            userDTO.setToken(token);
             return userDTO;
         } else {
             throw new ServiceExpection(Constants.CODE_600, "用户名或密码错误");
