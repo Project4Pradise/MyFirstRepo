@@ -1,4 +1,4 @@
-package com.springboot.common.interceptor;
+package com.springboot.config.interceptor;
 
 import cn.hutool.core.util.StrUtil;
 import com.auth0.jwt.JWT;

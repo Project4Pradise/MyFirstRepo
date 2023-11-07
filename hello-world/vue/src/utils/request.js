@@ -1,4 +1,5 @@
 import axios from 'axios'
+import ElementUI from "element-ui";
 
 const request = axios.create({
     baseURL: 'http://localhost:8090',
@@ -32,6 +33,13 @@ request.interceptors.response.use(
         // 兼容服务端返回的字符串数据
         if (typeof res === 'string') {
             res = res ? JSON.parse(res) : res
+        }
+        //当权限不通过的时候给出提示
+        if (res.code === '401') {
+            ElementUI.Message({
+                message: res.msg,
+                type: 'error'
+            });
         }
         return res;
     },
