@@ -95,12 +95,12 @@ public Result findOne(@PathVariable Integer id) {
         return Result.success(userService.getById(id));
         }
 
-    @GetMapping("/username/{username}")
-    public Result findOne(@PathVariable String username) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username",username);
-        return Result.success(userService.getOne(queryWrapper));
-    }
+@GetMapping("/username/{username}")
+public Result findOne(@PathVariable String username) {
+    QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+    queryWrapper.eq("username",username);
+    return Result.success(userService.getOne(queryWrapper));
+}
 @GetMapping("/export")
  public void export(HttpServletResponse response) throws Exception{
         //获取所有用户信息

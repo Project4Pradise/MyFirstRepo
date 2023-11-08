@@ -5,7 +5,11 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.springboot.common.Result;
 import com.springboot.entity.Files;
+import com.springboot.entity.User;
 import com.springboot.mapper.FileMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -57,8 +61,8 @@ private FileMapper fileMapper;
         } else {
             // 上传文件到磁盘
             file.transferTo(uploadFile);
-            // 数据库若不存在重复文件，则不删除刚才上传的文件
-            url = "http://localhost:9090/file/" + fileUUID;
+            // 数据库若不存在重复文件，则 不删除刚才上传的文件
+            url = "http://localhost:8090/file/" + fileUUID;
         }
 
         // 存储数据库
@@ -93,6 +97,57 @@ private FileMapper fileMapper;
         queryWrapper.eq("md5", md5);
         List<Files> filesList = fileMapper.selectList(queryWrapper);
         return filesList.size() == 0 ? null : filesList.get(0);
+    }
+
+    /**
+     * 分页查询接口
+     * @param pageNum
+     * @param pageSize
+     * @param name
+     * @return
+     */
+    @GetMapping("/page")
+    public Result findPage(@RequestParam Integer pageNum,
+                           @RequestParam Integer pageSize,
+                           @RequestParam(defaultValue = "") String name
+
+    ) {
+        QueryWrapper<Files> queryWrapper = new QueryWrapper<>();
+        //查询未被删除的记录
+        queryWrapper.eq("is_delete",false);
+        if (!"".equals(name)) {
+            queryWrapper.like("name", name);
+        }
+
+
+        //queryWrapper.orderByDesc("id");
+        IPage<Files> p = new Page<>(pageNum, pageSize);
+        return Result.success(fileMapper.selectPage(p ,queryWrapper));
+    }
+    @PostMapping("/update")
+    public Result save(@RequestBody Files file) {
+        return Result.success(fileMapper.updateById(file));
+    }
+    @DeleteMapping("/{id}")
+    public Result delete(@PathVariable Integer id) {
+        Files file=fileMapper.selectById(id);
+        file.setIsDelete(true);
+        fileMapper.updateById(file);
+        return Result.success();
+    }
+    @PostMapping("/del/batch")
+    public Result deleteBatch(@RequestBody List<Integer> ids) {
+        QueryWrapper<Files> queryWrapper=new QueryWrapper<>();
+        queryWrapper.in("id",ids);
+        List<Files> files = fileMapper.selectList(queryWrapper);
+        for (Files file : files) {
+            file.setIsDelete(true);
+            fileMapper.updateById(file);
+        }
+
+
+        return Result.success();
+
     }
 
 }
