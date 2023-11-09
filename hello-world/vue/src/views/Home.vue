@@ -21,6 +21,13 @@ export default class Home extends Vue {
        subtext: '趋势图',
        left: 'center'
      },
+     legend: {
+       orient: 'vertical',
+       left: 'left'
+     },
+     tooltip: {
+       trigger: 'item'
+     },
       xAxis: {
         type: 'category',
         data: ["第一季度","第二季度","第三季度","第四季度"]
@@ -30,10 +37,12 @@ export default class Home extends Vue {
       },
       series: [
         {
+          name:123,
           data: [],
           type: 'line'
         },
         {
+          name:456,
           data: [],
           type: 'bar'
         }
@@ -150,6 +159,41 @@ export default class Home extends Vue {
 
 <template>
   <div>
+    <el-row :gutter="10" style="margin-bottom: 20px">
+      <el-col :span="6">
+        <el-card style="color:#409EFF">
+          <div ><i class="el-icon-user-solid"/>用户总数</div>
+          <div style="padding: 10px;text-align: center;font-weight: bold">
+            100
+          </div>
+        </el-card>
+      </el-col>
+
+      <el-col :span="6">
+        <el-card style="color:#F56C6C">
+          <div ><i class="ei-icon-money/>"/>销售总量</div>
+          <div style="padding: 10px;text-align: center;font-weight: bold">
+            ￥1000000
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card style="color:#67C23A">
+          <div ><i class="el-icon-bank-card"/>收益总额</div>
+          <div style="padding: 10px;text-align: center;font-weight: bold">
+            ￥3000000
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card style="color:#E6A32C">
+          <div ><i class="el-icon-s-shop"/>门店总数</div>
+          <div style="padding: 10px;text-align: center;font-weight: bold">
+            10
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
     <el-row >
       <el-col :span="12">
         <div id="main" style="width: 500px;height: 400px"></div>

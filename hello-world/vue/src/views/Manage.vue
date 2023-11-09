@@ -7,13 +7,13 @@
 
     <el-container>
       <el-header style="border-bottom: 1px solid #ccc;">
-        <Header :collapseBtnClass="collapseBtnClass" :collapse="isCollapse" />
+        <Header :collapseBtnClass="collapseBtnClass" @asideCollapse="collapse" :user="user" />
 
       </el-header>
 
       <el-main>
         <!--        表示当前页面的子路由会在 <router-view /> 里面展示-->
-        <router-view />
+        <router-view @refreshUser="getUser" />
       </el-main>
 
     </el-container>
@@ -33,13 +33,25 @@ export default {
       isCollapse: false,
       sideWidth: 200,
       logoTextShow: true,
+      user: {}
     }
   },
   components: {
     Aside,
     Header
   },
+  created() {
+    //从后台获取最新的user
+    this.getUser()
+  },
   methods: {
+    getUser() {
+      let username=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).username:{}
+      //从后台获取用户
+      this.request.get("/user/username/" + username).then(res=>{
+      this.user=res.data
+      })
+    },
     collapse() {  // 点击收缩按钮触发
       this.isCollapse = !this.isCollapse
       if (this.isCollapse) {  // 收缩

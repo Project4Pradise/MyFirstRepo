@@ -33,7 +33,8 @@ export default {
   name: "Header",
   props: {
     collapseBtnClass: String,
-    collapse: {type:Function},
+    user:Object
+
   },
   watch:{
     '$route':function (){
