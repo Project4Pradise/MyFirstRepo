@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <div style="margin: 10px 0">
@@ -32,10 +33,11 @@
       <el-table-column prop="id" label="ID" width="80"></el-table-column>
       <el-table-column prop="name" label="名称" ></el-table-column>
       <el-table-column prop="description" label="描述" ></el-table-column>
+      <el-table-column prop="flag" label="唯一标识" ></el-table-column>
 
       <el-table-column label="操作"   align="center" width="280">
         <template slot-scope="scope">
-          <el-button type="info" @click="selectMenu(scope.row.id)">分配菜单 <i class="el-icon-menu"></i></el-button>
+          <el-button type="info" @click="selectMenu(scope.row)">分配菜单 <i class="el-icon-menu"></i></el-button>
           <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
               class="ml-5"
@@ -66,6 +68,9 @@
     <el-dialog title="角色信息" :visible.sync="dialogFormVisible" width="30%" >
       <el-form label-width="80px" size="small">
         <el-form-item label="名称">
+          <el-input v-model="form.flag" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="唯一标识">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="描述">
@@ -82,20 +87,29 @@
           :props="props"
           :data="menuData"
           show-checkbox
-          :default-expanded-keys="[2, 3]"
-          :default-checked-keys="[5]"
+          :default-expanded-keys="expends"
+          :default-checked-keys="checks"
           node-key="id"
-          @check-change="handleCheckChange">
+          ref="tree"
+          :check-strictly="true"
+
+      >
+        <span class="costom-tree-node" slot-scope="{node,data}">
+          <span>
+            <i :class="data.icon"></i>
+            {{data.name}}
+          </span>
+        </span>
       </el-tree>
       <div slot="footer" class="dialog-footer">
         <el-button @click="menuDialogVis = false">取 消</el-button>
-        <el-button type="primary" @click="save">确 定</el-button>
+        <el-button type="primary" @click="saveRoleMenu">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
-
 <script>
+
 export default {
   name: "User",
   data() {
@@ -110,9 +124,13 @@ export default {
       menuDialogVis: false,
       multipleSelection: [],
       menuData:[],
+      expends:[],
+      checks:[],
+      roleId:0,
       props:{
         label:"name"
-      }
+      },
+      roleFlag:''
 
 
     }
@@ -137,8 +155,18 @@ export default {
       })
 
     },
-    exp(){
-      window.open("http://localhost:8090/role/export")
+    saveRoleMenu(){
+      this.request.post("/role/roleMenu/"+this.roleId,this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys())).then(res=>{
+        if(res.code==="200"){
+          this.$message.success("绑定成功")
+          this.menuDialogVis=false
+
+
+        }else{
+          this.$message.error(res.msg)
+        }
+
+      })
     },
     save() {
       this.request.post("/role", this.form).then(res => {
@@ -158,10 +186,6 @@ export default {
     handleEdit(row) {
       this.form = row
       this.dialogFormVisible = true
-    },
-    handleExcelImportSuccess() {
-      this.$message.success("导入成功")
-      this.load()
     },
     del(id) {
       this.request.delete("/role/" + id).then(res => {
@@ -204,22 +228,33 @@ export default {
       this.pageNum = pageNum
       this.load()
     },
-    handleCheckChange(data, checked, indeterminate) {
-      console.log(data, checked, indeterminate);
-    },
-    selectMenu(roleId){
 
-      this.menuDialogVis=true
+    selectMenu(role){
+
+
+      this.roleId=role.id
+      this.roleFlag=role.flag
       //请求菜单数据
       this.request.get("/menu").then(res => {
-        console.log(res)
-
         this.menuData = res.data
-
+        //把后台返回的数据处理成id数组
+       this.expends= this.menuData.map(v=>v.id)
+      })
+      this.request.get("/role/roleMenu/"+this.roleId).then(res => {
+        console.log(res.data)
+          this.checks=res.data
+        this.request.get("/menu/ids").then(r=>{
+          const ids=r.data
+          ids.forEach(id=>{
+            if(!this.checks.includes(id)){
+              this.$refs.tree.setChecked(id,false)
+            }
+          })
+        })
 
       })
-
-    }
+      this.menuDialogVis=true
+    },
   }
 }
 </script>

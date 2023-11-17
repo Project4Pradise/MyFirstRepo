@@ -1,7 +1,10 @@
 package com.springboot.controller.dto;
 
 import cn.hutool.core.annotation.Alias;
+import com.springboot.entity.Menu;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class UserDto {
@@ -11,4 +14,6 @@ public class UserDto {
     @Alias("avatar_Url")
     private String avatar;
     private String token;
+    private String role;
+    private List<Menu> menus;
 }

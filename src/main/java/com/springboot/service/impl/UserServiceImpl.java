@@ -5,14 +5,23 @@ import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.springboot.common.Constants;
 import com.springboot.controller.dto.UserDto;
+import com.springboot.entity.Menu;
 import com.springboot.entity.User;
 import com.springboot.exception.ServiceExpection;
+import com.springboot.mapper.RoleMapper;
+import com.springboot.mapper.RoleMenuMapper;
 import com.springboot.mapper.UserMapper;
+import com.springboot.service.IMenuService;
 import com.springboot.service.IUserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.springboot.utils.TokenUtils;
+import org.apache.poi.poifs.property.Child;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -28,6 +37,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private RoleMapper roleMapper;
+
+    @Resource
+    private RoleMenuMapper roleMenuMapper;
+
+    @Resource
+    private IMenuService menuService;
+
     @Override
     public UserDto login(UserDto userDTO) {
         User one = getUserInfo(userDTO);
@@ -37,6 +55,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             BeanUtil.copyProperties(one, userDTO, true);
             String token= TokenUtils.genToken(one.getId().toString(),one.getPassword());
             userDTO.setToken(token);
+            String role=one.getRole();
+            //设置用户的菜单列表
+            List<Menu> roleMenus = getRoleMenus(role);
+            userDTO.setMenus(roleMenus);
             return userDTO;
         } else {
             throw new ServiceExpection(Constants.CODE_600, "用户名或密码错误");
@@ -74,6 +96,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userMapper.updateById(one);
         }
         return userDto;
+    }
+
+    //获取当前角色的菜单列表
+    private List<Menu> getRoleMenus(String roleFlag){
+        Integer roleId = roleMapper.selectByFlag(roleFlag);
+        //当前角色的所有菜单id
+        List<Integer> menuIds = roleMenuMapper.selectByRoleId(roleId);
+        //查出系统所有菜单
+        List<Menu> menus = menuService.findMenus("");
+        //new一个最后筛选完成的list
+        List<Menu> roleMenus=new ArrayList<>();
+        //筛选当前用户菜单
+        for (Menu menu : menus) {
+            if(menuIds.contains(menu.getId())){
+                roleMenus.add(menu);
+            }
+            List<Menu> children = menu.getChildren();
+            children.removeIf(child->!menuIds.contains(child.getId()));
+
+        }
+        return  roleMenus;
     }
 
 

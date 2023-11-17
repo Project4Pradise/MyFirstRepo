@@ -80,5 +80,7 @@ public class User implements Serializable {
    */
       private Integer islogin;
 
+  private String role;
+
 
 }
