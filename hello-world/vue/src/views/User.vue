@@ -21,7 +21,7 @@
       >
         <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
-      <el-upload action="http://localhost:8090/user/import" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
+      <el-upload :action="'http://'+ serverIp +':8090/user/import'" :show-file-list="false" accept="xlsx" :on-success="handleExcelImportSuccess" style="display: inline-block">
         <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
       </el-upload>
       <el-button type="primary" @click="exp" class="ml-5">导出 <i class="el-icon-top"></i></el-button>
@@ -100,6 +100,8 @@
 </template>
 
 <script>
+import {serverIp} from "../../public/config";
+
 export default {
   name: "User",
   data() {
@@ -114,13 +116,15 @@ export default {
       form: {},
       dialogFormVisible: false,
       multipleSelection: [],
-      roles:[]
+      roles:[],
+      serverIp:serverIp
     }
   },
   created() {
     this.load()
   },
   methods: {
+
     load() {
       this.request.get("/user/page", {
         params: {
@@ -142,7 +146,7 @@ export default {
       })
     },
     exp(){
-      window.open("http://localhost:8090/user/export")
+      window.open(`http://${serverIp}:8090/user/export`)
     },
     save() {
       this.request.post("/user", this.form).then(res => {

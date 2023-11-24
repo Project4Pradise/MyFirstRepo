@@ -93,6 +93,8 @@
 </template>
 
 <script>
+import {serverIp} from "../../public/config";
+
 export default {
   name: "User",
   data() {
@@ -125,7 +127,7 @@ export default {
       })
     },
     exp(){
-      window.open("http://localhost:8090/role/export")
+      window.open(`http://${serverIp}:8090/role/export`)
     },
     save() {
       this.request.post("/menu", this.form).then(res => {

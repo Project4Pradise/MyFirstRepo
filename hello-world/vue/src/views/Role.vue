@@ -241,7 +241,7 @@ export default {
        this.expends= this.menuData.map(v=>v.id)
       })
       this.request.get("/role/roleMenu/"+this.roleId).then(res => {
-        console.log(res.data)
+
           this.checks=res.data
         this.request.get("/menu/ids").then(r=>{
           const ids=r.data
