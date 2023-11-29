@@ -68,10 +68,10 @@
     <el-dialog title="角色信息" :visible.sync="dialogFormVisible" width="30%" >
       <el-form label-width="80px" size="small">
         <el-form-item label="名称">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+          <el-input v-model="form.flag" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="唯一标识">
-          <el-input v-model="form.flag" autocomplete="off"></el-input>
+          <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="描述">
           <el-input v-model="form.description" autocomplete="off"></el-input>

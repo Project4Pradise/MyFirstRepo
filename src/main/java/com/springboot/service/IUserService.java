@@ -1,5 +1,6 @@
 package com.springboot.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.springboot.controller.dto.UserDto;
 import com.springboot.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -18,4 +19,6 @@ public interface IUserService extends IService<User> {
 
     User register(UserDto userDto);
     UserDto logout(UserDto userDto);
+
+    Page<User> fingPage(Page<User> objectPage, String username, String email, String address);
 }

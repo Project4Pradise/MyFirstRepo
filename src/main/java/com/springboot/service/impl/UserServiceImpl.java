@@ -3,6 +3,7 @@ package com.springboot.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.log.Log;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.springboot.common.Constants;
 import com.springboot.controller.dto.UserDto;
 import com.springboot.entity.Menu;
@@ -96,6 +97,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             userMapper.updateById(one);
         }
         return userDto;
+    }
+
+    @Override
+    public Page fingPage(Page<User> page, String username, String email, String address) {
+
+        return userMapper.findPage(page,username,email,address);
     }
 
     //获取当前角色的菜单列表

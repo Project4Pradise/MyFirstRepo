@@ -1,7 +1,7 @@
 
 server:
   port: 8090
-  ip: 172.21.2.103
+  ip: localhost
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

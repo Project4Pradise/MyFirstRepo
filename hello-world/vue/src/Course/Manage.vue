@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     getUser() {
-      let username=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).username:""
+      let username=localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).username:{}
       //从后台获取用户
       this.request.get("/user/username/" + username).then(res=>{
       this.user=res.data

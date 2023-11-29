@@ -90,6 +90,15 @@ public Result findAll() {
         return Result.success(userService.list());
         }
 
+
+    @GetMapping("/role/{role}")
+    public Result findUsersByRole(@PathVariable String role) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("role",role);
+        List<User> list = userService.list(queryWrapper);
+        return Result.success(list);
+    }
+
 @GetMapping("/{id}")
 public Result findOne(@PathVariable Integer id) {
         return Result.success(userService.getById(id));
@@ -162,7 +171,7 @@ public Result findPage(@RequestParam Integer pageNum,
                            @RequestParam(defaultValue = "") String email,
                            @RequestParam(defaultValue = "") String address
 ) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+/*        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         if (!"".equals(username)) {
                 queryWrapper.like("username", username);
         }
@@ -171,10 +180,10 @@ public Result findPage(@RequestParam Integer pageNum,
         }
         if (!"".equals(address)) {
                 queryWrapper.like("address", address);
-        }
+        }*/
 
         //queryWrapper.orderByDesc("id");
-        return Result.success(userService.page(new Page<>(pageNum, pageSize), queryWrapper));
+        return Result.success(userService.fingPage(new Page<>(pageNum, pageSize), username,email,address));
         }
 
 }
