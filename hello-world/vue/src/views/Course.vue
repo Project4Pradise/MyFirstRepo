@@ -36,7 +36,7 @@
           <el-switch v-model="scope.row.state" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(scope.row)"></el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作"  width="200" align="center">
+      <el-table-column label="操作"  width="280" align="center">
         <template slot-scope="scope">
           <el-button type="primary" @click="selectCourse(scope.row.id)">选课</el-button>
           <el-button type="success" @click="handleEdit(scope.row)" v-if="user.role==='ROLE_ADMIN'">编辑 <i class="el-icon-edit"></i></el-button>
@@ -120,8 +120,14 @@ export default {
     this.load()
   },
   methods: {
-    selectCourse(){
-
+    selectCourse(courseId){
+    this.request.post('/course/StudentCourse/'+this.user.id+'/'+courseId).then(res=>{
+      if(res.code==='200'){
+        this.$message.success("选课成功")
+      }else{
+        this.$message.success(res.msg)
+      }
+    })
     },
     load() {
       this.request.get("/course/page", {

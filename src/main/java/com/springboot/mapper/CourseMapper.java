@@ -16,4 +16,8 @@ import org.apache.ibatis.annotations.Param;
 public interface CourseMapper extends BaseMapper<Course> {
 
     Page<Course> findPage(Page<Course> page, @Param("name") String name);
+
+
+    void setStudentCourse(@Param("courseId") Integer courseId,@Param("studentId") Integer studentId);
+    void deleteStudentCourse(@Param("courseId") Integer courseId,@Param("studentId") Integer studentId);
 }

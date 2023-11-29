@@ -44,6 +44,7 @@
       <el-table-column label="操作"  width="300" align="center">
         <template slot-scope="scope">
           <el-button type="primary" @click="lookCourse(scope.row.courses)" v-if="scope.row.role==='ROLE_TEACHER'">查看任课 <i class="el-icon-edit"></i></el-button>
+          <el-button type="primary" @click="lookStuCourse(scope.row.stuCourses)" v-if="scope.row.role==='ROLE_STUDENT'">查看已选课程 <i class="el-icon-edit"></i></el-button>
           <el-button type="success" @click="handleEdit(scope.row)">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
               class="ml-5"
@@ -102,10 +103,16 @@
         <el-button type="primary" @click="save">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog title="用户信息" :visible.sync="vis" width="30%" >
+    <el-dialog title="任课信息" :visible.sync="vis" width="30%" >
       <el-table :data="courses" border stripe>
-        <el-table-column prop="name" lable="课程名称"></el-table-column>
-        <el-table-column prop="score" lable="学分"></el-table-column>
+        <el-table-column prop="name" label="课程名称"></el-table-column>
+        <el-table-column prop="score" label="学分"></el-table-column>
+      </el-table>
+    </el-dialog>
+    <el-dialog title="选课信息" :visible.sync="StuVis" width="30%" >
+      <el-table :data="stuCourses" border stripe>
+        <el-table-column prop="name" label="课程名称"></el-table-column>
+        <el-table-column prop="score" label="学分"></el-table-column>
       </el-table>
     </el-dialog>
   </div>
@@ -130,7 +137,9 @@ export default {
       multipleSelection: [],
       roles:[],
       courses:[],
-      vis:false
+      stuCourses:[],
+      vis:false,
+      StuVis:false
     }
   },
   created() {
@@ -140,6 +149,10 @@ export default {
     lookCourse(courses){
       this.courses=courses
       this.vis=true
+    },
+    lookStuCourse(stuCourse){
+      this.stuCourses=stuCourse
+      this.StuVis=true
     },
 
     load() {

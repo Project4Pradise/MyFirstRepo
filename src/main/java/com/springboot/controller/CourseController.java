@@ -35,7 +35,11 @@ private IUserService userService;
 public Result save(@RequestBody Course course) {
         return Result.success(courseService.saveOrUpdate(course));
         }
-
+        @PostMapping("/StudentCourse/{studentId}/{courseId}")
+        public Result studentCourse(@PathVariable Integer studentId,@PathVariable Integer courseId) {
+                courseService.setStudentCourse(studentId,courseId);
+                return Result.success();
+        }
 @DeleteMapping("/{id}")
 public Result delete(@PathVariable Integer id) {
         return Result.success(courseService.removeById(id));

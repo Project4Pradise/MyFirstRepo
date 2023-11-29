@@ -7,6 +7,7 @@ import com.springboot.service.ICourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -25,5 +26,12 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Override
     public Page<Course> findPage(Page<Course> page, String name) {
         return courseMapper.findPage(page,name);
+    }
+
+    @Transactional
+    @Override
+    public void setStudentCourse(Integer studentId, Integer courseId) {
+        courseMapper.deleteStudentCourse(courseId,studentId);
+        courseMapper.setStudentCourse(courseId,studentId);
     }
 }
