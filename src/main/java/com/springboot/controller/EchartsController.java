@@ -6,7 +6,9 @@ import cn.hutool.core.date.Quarter;
 import cn.hutool.core.io.unit.DataUnit;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.springboot.common.Result;
+import com.springboot.config.AuthAccess;
 import com.springboot.entity.User;
+import com.springboot.mapper.FileMapper;
 import com.springboot.service.IUserService;
 import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +28,8 @@ import java.util.Map;
 public class EchartsController {
     @Autowired
     private IUserService userService;
+    @Resource
+    private FileMapper fileMapper;
     @GetMapping("/example")
     public Result get(){
         Map<String,Object> map=new HashMap<>();
@@ -52,6 +57,11 @@ public class EchartsController {
 
      }
      return Result.success(CollUtil.newArrayList( q1,q2,q3,q4 ));
+    }
+    @AuthAccess
+    @GetMapping("/file/front/all")
+    public Result frontAll() {
+        return Result.success(fileMapper.selectList(null ));
     }
     @GetMapping("/islogin")
     public Result loginUser(){

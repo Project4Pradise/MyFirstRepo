@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.springboot.common.Result;
+import com.springboot.config.AuthAccess;
 import com.springboot.entity.Files;
 import com.springboot.entity.User;
 import com.springboot.mapper.FileMapper;
@@ -128,10 +129,7 @@ private FileMapper fileMapper;
         IPage<Files> p = new Page<>(pageNum, pageSize);
         return Result.success(fileMapper.selectPage(p ,queryWrapper));
     }
-    @GetMapping("/front/all")
-    public Result frontAll() {
-        return Result.success(fileMapper.selectList(null ));
-    }
+
     @PostMapping("/update")
     public Result save(@RequestBody Files file) {
         return Result.success(fileMapper.updateById(file));
