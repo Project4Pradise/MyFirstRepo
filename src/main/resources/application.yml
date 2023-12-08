@@ -25,6 +25,6 @@ mybatis-plus:
 
 files:
   upload:
-    #path: D:\tech_software\java\IDEAWorkSpace\springboot-new\files\
-    path: /home/dev/app/files
+    path: D:\tech_software\java\IDEAWorkSpace\springboot-new\files\
+    #path: /home/dev/app/files
 

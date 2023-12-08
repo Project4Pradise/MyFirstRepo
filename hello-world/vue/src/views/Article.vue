@@ -27,7 +27,11 @@
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="id" label="ID" width="80"></el-table-column>
       <el-table-column prop="name" label="文章标题" width="140"></el-table-column>
-      <el-table-column prop="content" label="文章内容" width="120"></el-table-column>
+      <el-table-column prop="content" label="文章内容" width="120">
+        <template slot-scope="scope">
+          <el-button @click="view(scope.row.content)" type="primary">查看内容</el-button>
+        </template>
+      </el-table-column>
       <el-table-column prop="user" label="发布人"></el-table-column>
       <el-table-column prop="time" label="发布时间"></el-table-column>
 
@@ -74,6 +78,22 @@
         <el-button type="primary" @click="save">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog title="文章信息" :visible.sync="viewDialogVis" width="60%" >
+      <el-card>
+        <div>
+          <mavon-editor
+              class="md"
+              :value="content"
+              :subfield="false"
+              :defaultOpen="'preview'"
+              :toolbarsFlag="false"
+              :editable="false"
+              :scrollStyle="true"
+              :ishljs="true"
+              />
+        </div>
+      </el-card>
+    </el-dialog>
   </div>
 </template>
 <script >
@@ -101,7 +121,10 @@ export default {
       total: 0,
       dialogFormVisible:false,
       teachers:[],
-      user: localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):{}
+      user: localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):{},
+      content: '',
+      viewDialogVis:false
+
     }
   },
 
@@ -109,7 +132,12 @@ export default {
     this.load()
   },
   methods: {
-    imgAdd(){
+    view(content){
+      this.content = content
+      this.viewDialogVis=true
+
+    },
+    imgAdd(pos,$file){
       let $vm=this.$refs.md
       const formData =new FormData();
       formData.append('file',$file);

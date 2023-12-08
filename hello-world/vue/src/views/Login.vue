@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div class="wrapper">
     <div style="margin: 200px auto; background-color: #fff; width: 350px; height: 300px; padding: 20px; border-radius: 10px">
       <div style="margin: 20px 0; text-align: center; font-size: 24px"><b>登 录</b></div>
@@ -49,8 +49,14 @@ export default {
                localStorage.setItem("menus",JSON.stringify(res.data.menus))//存储用户信息到浏览器
               //动态设置当前角色的路由
               setRoutes()
-              this.$router.push("/")
               this.$message.success("登录成功")
+              if(res.data.role==="ROLE_STUDENT"){
+                this.$router.push("/front/home")
+              }else{
+                this.$router.push("/")
+              }
+
+
             } else {
               this.$message.error(res.msg)
             }

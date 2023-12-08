@@ -1,12 +1,15 @@
 package com.springboot.controller;
 
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.io.unit.DataUnit;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.springboot.common.Result;
 import com.springboot.entity.Article;
 import com.springboot.service.IArticleService;
+import com.springboot.utils.TokenUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
@@ -30,6 +33,10 @@ private IArticleService articleService;
 // 新增或者更新
 @PostMapping
 public Result save(@RequestBody Article article) {
+        if(article.getId()==null){//新增
+                article.setTime(DateUtil.now());//new Date()
+                article.setUser(TokenUtils.getCurrentUser().getNickname());
+        }
         return Result.success(articleService.saveOrUpdate(article));
         }
 

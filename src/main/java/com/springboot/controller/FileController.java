@@ -74,6 +74,8 @@ private FileMapper fileMapper;
         saveFile.setSize(size/1024);
         saveFile.setUrl(url);
         saveFile.setMd5(md5);
+        saveFile.setIsDelete(false);
+        saveFile.setEnable(true);
         fileMapper.insert(saveFile);
 
         return url;
@@ -125,6 +127,10 @@ private FileMapper fileMapper;
         //queryWrapper.orderByDesc("id");
         IPage<Files> p = new Page<>(pageNum, pageSize);
         return Result.success(fileMapper.selectPage(p ,queryWrapper));
+    }
+    @GetMapping("/front/all")
+    public Result frontAll() {
+        return Result.success(fileMapper.selectList(null ));
     }
     @PostMapping("/update")
     public Result save(@RequestBody Files file) {
