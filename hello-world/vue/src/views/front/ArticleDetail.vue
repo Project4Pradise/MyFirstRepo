@@ -1,0 +1,161 @@
+
+
+<template>
+  <div style="color: #666">
+    <div>
+      <div class="pd-10"style="font-size: 20px;color: #3F5EFB;cursor: pointer;margin: 20px 0">{{article.name}}</div>
+      <div style="font-size: 14px;margin-top: 10px">
+        <i class="el-icon-user-solid"></i><span>{{article.user}}</span>
+        <i class="el-icon-user-time" style="margin-left: 10px"></i><span>{{article.time}}</span>
+      </div>
+      <div style="margin:20px 0">
+        <mavon-editor
+            class="md"
+            :value="article.content"
+            :subfield="false"
+            :defaultOpen="'preview'"
+            :toolbarsFlag="false"
+            :editable="false"
+            :scrollStyle="true"
+            :ishljs="true"
+        />
+      </div>
+      <div style="margin: 30px 0">
+        <div style="margin:10px 0">
+          <div style="border-bottom: 1px solid orangered;padding: 10px 0;font-size: 20px">评论</div>
+          <div style="padding: 10px 0">
+            <el-input type="textarea" v-model="commentForm.content" size="small">
+
+            </el-input>
+
+          </div>
+          <div class="pd-10" style="text-align: right">
+            <el-button type="primary" size="small"@click="save">评论</el-button>
+          </div>
+        </div>
+<!--        评论列表-->
+        <div>
+          <div v-for="item in comments" :key="item.id" style="border-bottom:  1px solid #ccc;padding: 10px 0;display: flex">
+            <div style="width: 100px;text-align: center">
+              <el-image :src="item.avatarUrl" style="width:50px;height: 50px;border-radius: 50%"></el-image>
+            </div> <!--头像-->
+            <div style="flex: 1;font-size: 14px;padding: 5px 0;line-height: 25px">
+                <b>{{item.nickname}}:</b>
+                <span>{{item.content}}</span>
+              <div style="display: flex;line-height: 20px;margin-top: 5px">
+                <div style="width: 200px">
+                  <i class="el-icon-time"></i><span style="margin-left: 5px">{{item.time}}</span>
+                </div>
+                <div style="text-align: right;flex:1">
+                  <el-button style="margin-left: 5px" type="text" @click="handleReply(item.id)">回复</el-button>
+<!--                  要加上删除按钮的对发布者的可见-->
+                  <el-button  style="color:red" type="text " @click="del(item.id)">删除</el-button>
+                </div>
+
+              </div>
+            </div>  <!--内容-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <el-dialog title="回复" :visible.sync="dialogFormVisible" width="50%" >
+      <el-form label-width="80px" size="small">
+        <el-form-item label="回复内容 ">
+          <el-input type="textarea" v-model="commentForm.contentReply" autocomplete="off"></el-input>
+        </el-form-item>
+
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="save" size="small">确 定</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+<script >
+
+
+
+
+
+export default {
+  name:"ArticleDetail",
+  computed: {
+    url() {
+      return url
+    }
+  },
+  data() {
+    return {
+      article:{},
+      user: localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")):{},
+      comments:[],
+      commentForm:{},
+      id:this.$route.query.id,
+      dialogFormVisible:false
+    }
+  },
+
+  created() {
+    this.load()
+    this.loadComment()
+  },
+  methods: {
+    load() {
+
+      this.request.get("/article/"+ this.id).then(res => {
+        this.article = res.data
+      })
+
+    },
+    loadComment(){
+
+      this.request.get("/comment/tree/"+ this.id).then(res => {
+        this.comments = res.data
+      })
+    },
+    save() {
+      if(!this.user.id){
+        this.$message.warning("请登录后才能评论")
+        return
+      }
+      this.commentForm.articleId=this.id
+      if(this.commentForm.contentReply){
+        this.commentForm.content=this.commentForm.contentReply
+      }
+      this.request.post("/comment", this.commentForm).then(res => {
+        if (res.code==='200') {
+          this.$message.success("评论成功")
+          this.commentForm={}//初始化评论内容对象
+          this.loadComment()
+          this.dialogFormVisible=false
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    handleReply(pid){
+      this.commentForm={pid:pid,originId:pid}
+      this.dialogFormVisible=true
+    },
+
+  del(id) {
+    this.request.delete("/comment/" + id).then(res => {
+      if (res.code === '200') {
+        this.$message.success("删除成功")
+        this.loadComment()
+      } else {
+        this.$message.error("删除失败")
+      }
+    })
+  }
+
+
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
