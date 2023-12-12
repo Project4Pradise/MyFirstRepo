@@ -85,9 +85,9 @@ export const setRoutes=()=>{
     }
     //router.addRoute(manageRoute)
   }
+
 }
-//重置就再set一次路由
-//setRoutes()
+
 
 const router = new VueRouter({
   mode: 'history',
@@ -96,7 +96,8 @@ const router = new VueRouter({
 })
 
 // @ts-ignore
-
+//重置就再set一次路由
+setRoutes()
 // 路由守卫
 router.beforeEach((to, from, next) => {
 

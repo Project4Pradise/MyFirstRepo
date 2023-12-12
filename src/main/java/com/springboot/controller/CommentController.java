@@ -52,9 +52,10 @@ public Result save(@RequestBody Comment comment) {
         return Result.success();
 }
 
-@DeleteMapping("/{id}")
-public Result delete(@PathVariable Integer id) {
-        return Result.success(commentService.removeById(id));
+        @DeleteMapping("/{id}")
+        public Result delete(@PathVariable Integer id) {
+                commentService.removeById(id);
+                return Result.success();
         }
 
 @PostMapping("/del/batch")
