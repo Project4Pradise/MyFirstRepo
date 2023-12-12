@@ -17,6 +17,7 @@ import java.util.List;
  */
 public interface CommentMapper extends BaseMapper<Comment> {
 
-    @Select("select c.*,u.nickname,u.avatar_url from t_comment c left join sys_user u on c.user_id=u.id where c.article_id=#{articleId} order by id desc")
+    @Select("select c.*,u.nickname,u.avatar_url from t_comment c left join sys_user u on c.user_id=u.id"+
+            " where c.article_id=#{articleId} order by id desc")
     List<Comment> findCommnetDetail(@Param("articleId") Integer articleId);
 }

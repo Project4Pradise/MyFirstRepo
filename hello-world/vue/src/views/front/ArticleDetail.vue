@@ -35,25 +35,54 @@
         </div>
 <!--        评论列表-->
         <div>
-          <div v-for="item in comments" :key="item.id" style="border-bottom:  1px solid #ccc;padding: 10px 0;display: flex">
-            <div style="width: 100px;text-align: center">
-              <el-image :src="item.avatarUrl" style="width:50px;height: 50px;border-radius: 50%"></el-image>
-            </div> <!--头像-->
-            <div style="flex: 1;font-size: 14px;padding: 5px 0;line-height: 25px">
+          <div v-for="item in comments" :key="item.id" style="border-bottom:  1px solid #ccc;padding: 10px 0;">
+            <div style="display: flex">
+              <div style="width: 100px;text-align: center">
+                <el-image :src="item.avatarUrl" style="width:50px;height: 50px;border-radius: 50%"></el-image>
+              </div> <!--头像-->
+              <div style="flex: 1;font-size: 14px;padding: 5px 0;line-height: 25px">
                 <b>{{item.nickname}}:</b>
                 <span>{{item.content}}</span>
-              <div style="display: flex;line-height: 20px;margin-top: 5px">
-                <div style="width: 200px">
-                  <i class="el-icon-time"></i><span style="margin-left: 5px">{{item.time}}</span>
-                </div>
-                <div style="text-align: right;flex:1">
-                  <el-button style="margin-left: 5px" type="text" @click="handleReply(item.id)">回复</el-button>
-<!--                  要加上删除按钮的对发布者的可见-->
-                  <el-button  style="color:red" type="text " @click="del(item.id)">删除</el-button>
-                </div>
+                <div style="display: flex;line-height: 20px;margin-top: 5px">
+                  <div style="width: 200px">
+                    <i class="el-icon-time"></i><span style="margin-left: 5px">{{item.time}}</span>
+                  </div>
+                  <div style="text-align: right;flex:1">
+                    <el-button style="margin-left: 5px" type="text" @click="handleReply(item.id)">回复</el-button>
+                    <!--                  要加上删除按钮的对发布者的可见-->
+                    <el-button  style="color:red" type="text " @click="del(item.id)">删除</el-button>
+                  </div>
 
+                </div>
+              </div>  <!--内容-->
+            </div>
+            <div v-if="item.children.length"   style="padding-left: 100px;">
+              <div v-for="subitem in item.children" :key="subitem.id" style="background-color: #f0f0f0;padding: 10px 20px">
+                <!--              回复列表-->
+                <div style="font-size: 14px;padding: 5px 0;line-height: 25px">
+                  <div>
+                    <b style="color: #3a8ee6" v-if="subitem.pnickname">回复@{{subitem.pnickname}}:</b>
+                  </div>
+                  <div style="padding-left: 5px">
+                    <b>{{subitem.nickname}}:</b>
+                    <span>{{subitem.content}}</span>
+                  </div>
+
+                  <div style="display: flex;line-height: 20px;margin-top: 5px">
+                    <div style="width: 200px">
+                      <i class="el-icon-time"></i><span style="margin-left: 5px;padding-left: 5px">{{subitem.time}}</span>
+                    </div>
+                    <div style="text-align: right;flex:1">
+                      <el-button style="margin-left: 5px" type="text" @click="handleReply(subitem.id)">回复</el-button>
+                      <!--                  要加上删除按钮的对发布者的可见-->
+                      <el-button  style="color:red" type="text " @click="del(item.id)">删除</el-button>
+                    </div>
+
+                  </div>
+                </div>  <!--内容-->
               </div>
-            </div>  <!--内容-->
+
+            </div>
           </div>
         </div>
       </div>
@@ -136,7 +165,8 @@ export default {
       })
     },
     handleReply(pid){
-      this.commentForm={pid:pid,originId:pid}
+      this.commentForm={pid:pid}
+
       this.dialogFormVisible=true
     },
 

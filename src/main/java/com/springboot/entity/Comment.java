@@ -50,6 +50,12 @@ public class Comment implements Serializable {
      */
       private Integer pid;
 
+      @TableField(exist = false)
+      private String pNickname;//父节点用户昵称
+
+      @TableField(exist = false)
+      private Integer pUserId;//父节点用户id
+
       /**
      * 最上级评论id
      */
