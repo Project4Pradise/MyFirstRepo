@@ -3,6 +3,7 @@
     "axios": "^1.5.1",
     "echarts": "^5.4.3",
     "mavon-editor": "^2.10.4",
+    "video.js": "^8.6.1",
     "vuex": "^4.1.0"
   }
 }

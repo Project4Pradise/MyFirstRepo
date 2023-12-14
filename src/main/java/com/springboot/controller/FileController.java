@@ -37,6 +37,7 @@ private String serverIp;
 @Resource
 private FileMapper fileMapper;
 
+
     @PostMapping("/upload")
     public String upload(@RequestParam MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
@@ -129,6 +130,15 @@ private FileMapper fileMapper;
         IPage<Files> p = new Page<>(pageNum, pageSize);
         return Result.success(fileMapper.selectPage(p ,queryWrapper));
     }
+    @GetMapping("list")
+    public Result findAll(){
+
+        return Result.success(fileMapper.selectList(null));
+    }
+    @GetMapping("/detail/{id}")
+    public Result getById(@PathVariable Integer id){
+        return Result.success(fileMapper.selectById(id));
+    }
 
     @PostMapping("/update")
     public Result save(@RequestBody Files file) {
@@ -141,6 +151,7 @@ private FileMapper fileMapper;
         fileMapper.updateById(file);
         return Result.success();
     }
+
     @PostMapping("/del/batch")
     public Result deleteBatch(@RequestBody List<Integer> ids) {
         QueryWrapper<Files> queryWrapper=new QueryWrapper<>();
