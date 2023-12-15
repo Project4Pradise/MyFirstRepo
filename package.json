@@ -5,5 +5,9 @@
     "mavon-editor": "^2.10.4",
     "video.js": "^8.6.1",
     "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "less": "^4.2.0",
+    "less-loader": "^11.1.3"
   }
 }
