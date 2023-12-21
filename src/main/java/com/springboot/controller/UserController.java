@@ -10,15 +10,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.springboot.common.Constants;
 import com.springboot.common.Result;
+import com.springboot.config.CaptchaConfig;
 import com.springboot.controller.dto.UserDto;
 import com.springboot.entity.User;
 import com.springboot.service.IUserService;
 import com.springboot.service.impl.UserServiceImpl;
 import com.springboot.utils.TokenUtils;
+import com.wf.captcha.utils.CaptchaUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -50,7 +53,12 @@ public Result save(@RequestBody User user) {
         }
 //登录
 @PostMapping("/login")
-public Result login(@RequestBody UserDto userDto) {
+public Result login(@RequestBody UserDto userDto, @RequestParam String key, HttpServletRequest request) {
+    if(!userDto.getVercode().toLowerCase().equals(CaptchaConfig.CAPTURE_MAP.get(key))){
+        CaptchaUtil.clear(request);
+        CaptchaConfig.CAPTURE_MAP.remove(key);
+        return Result.error(Constants.CODE_400,"验证码不正确");
+    }
     String username = userDto.getUsername();
     String password = userDto.getPassword();
     if(StrUtil.isBlank(username)||StrUtil.isBlank(password)){

@@ -17,4 +17,5 @@ public class UserDto {
     private String token;
     private String role;
     private List<Menu> menus;
+    private String vercode;
 }
