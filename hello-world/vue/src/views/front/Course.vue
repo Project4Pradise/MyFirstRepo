@@ -30,14 +30,14 @@
       <el-table-column prop="times" label="上课时间"></el-table-column>
       <el-table-column prop="teacher" label="授课老师"></el-table-column>
 
-      <el-table-column label="启用">
+      <el-table-column label="启用" v-if="user.role==='ROLE_ADMIN'">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.state" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(scope.row)"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作"  width="280" align="center">
         <template slot-scope="scope">
-<!--          <el-button type="primary" @click="selectCourse(scope.row.id)">选课</el-button>-->
+          <el-button type="primary" @click="selectCourse(scope.row.id)" v-if="user.role==='ROLE_STUDENT'">选课</el-button>
           <el-button type="success" @click="handleEdit(scope.row)" v-if="user.role==='ROLE_ADMIN'">编辑 <i class="el-icon-edit"></i></el-button>
           <el-popconfirm
               class="ml-5"
@@ -120,16 +120,16 @@ export default {
   },
   methods: {
     selectCourse(courseId){
-    this.request.post('/course/StudentCourse/'+this.user.id+'/'+courseId).then(res=>{
-      if(res.code==='200'){
-        this.$message.success("选课成功")
-      }else{
-        this.$message.success(res.msg)
-      }
-    })
+      this.request.post('/course/StudentCourse/'+this.user.id+'/'+courseId).then(res=>{
+        if(res.code==='200'){
+          this.$message.success("选课成功")
+        }else{
+          this.$message.success(res.msg)
+        }
+      })
     },
     load() {
-      this.request.get("/course/page", {
+      this.request.get("/course/pageStu", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,

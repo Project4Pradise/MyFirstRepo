@@ -29,6 +29,7 @@
           <el-menu-item index="/front/home">首页</el-menu-item>
           <el-menu-item index="/front/video">视频播放</el-menu-item>
           <el-menu-item index="/front/article">文章列表</el-menu-item>
+          <el-menu-item index="/front/course">选课系统</el-menu-item>
           <el-submenu index="2">
             <template slot="title">我的工作台</template>
             <el-menu-item index="/front/item1">选项1</el-menu-item>
@@ -60,6 +61,9 @@
             <el-dropdown-menu slot="dropdown" style="width: 100px; text-align: center">
               <el-dropdown-item style="font-size: 14px; padding: 5px 0">
                 <router-link to="/person">个人信息</router-link>
+              </el-dropdown-item>
+              <el-dropdown-item style="font-size: 14px; padding: 5px 0" v-if="user.role === 'ROLE_ADMIN' || user.role === 'ROLE_TEACHER'">
+                <router-link  to="/home">进入后台</router-link>
               </el-dropdown-item>
               <el-dropdown-item style="font-size: 14px; padding: 5px 0">
                 <span style="text-decoration: none" @click="logout">退出</span>

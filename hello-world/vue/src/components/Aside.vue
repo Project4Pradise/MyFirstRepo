@@ -53,6 +53,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
+
+.el-menu--collapse span {
+  visibility: hidden;
+}
 
 </style>

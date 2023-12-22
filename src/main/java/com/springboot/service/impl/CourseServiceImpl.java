@@ -1,5 +1,6 @@
 package com.springboot.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.springboot.entity.Course;
 import com.springboot.mapper.CourseMapper;
@@ -24,8 +25,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     @Resource
     private CourseMapper courseMapper;
     @Override
-    public Page<Course> findPage(Page<Course> page, String name) {
-        return courseMapper.findPage(page,name);
+    public Page<Course> findPage(Page<Course> page, String name, QueryWrapper<Course> queryWrapper) {
+        return courseMapper.findPage(page,name,queryWrapper);
     }
 
     @Transactional

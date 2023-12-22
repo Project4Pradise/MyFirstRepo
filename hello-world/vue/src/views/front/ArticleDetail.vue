@@ -50,7 +50,7 @@
                   <div style="text-align: right;flex:1">
                     <el-button style="margin-left: 5px" type="text" @click="handleReply(item.id)">回复</el-button>
                     <!--                  要加上删除按钮的对发布者的可见-->
-                    <el-button  style="color:red" type="text " @click="del(item.id)">删除</el-button>
+                    <el-button  style="color:red" type="text " @click="del(item.id)" v-if="user.role==='ROLE_ADMIN'||user.id===item.userId">删除</el-button>
                   </div>
 
                 </div>
@@ -75,7 +75,7 @@
                     <div style="text-align: right;flex:1">
                       <el-button style="margin-left: 5px" type="text" @click="handleReply(subitem.id)" >回复</el-button>
                       <!--                  要加上删除按钮的对发布者的可见-->
-                      <el-button type="text" style="color: red" @click="del(subItem.id)" >删除</el-button>
+                      <el-button type="text" style="color: red" @click="del(subItem.id)" v-if="user.role==='ROLE_ADMIN'||user.id===subitem.userId" >删除</el-button>
                     </div>
 
                   </div>

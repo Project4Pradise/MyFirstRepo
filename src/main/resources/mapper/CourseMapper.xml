@@ -13,9 +13,15 @@
         left join sys_user on course.teacher_id=sys_user.id
         <where>
 
-            <if test="name !=null and name!=''">
-                and name like concat('%',#{name},%)
+                     <if test="name !=null and name!=''">
+                        and name like concat('%',#{name},%)
+                     </if>
+            <if test="ew != null and ew.sqlSegment != null">
+                <if test="ew.sqlSegment != ''">
+                    AND ${ew.sqlSegment}
+                </if>
             </if>
+
         </where>
     </select>
 </mapper>
