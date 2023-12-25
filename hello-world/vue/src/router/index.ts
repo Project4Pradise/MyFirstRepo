@@ -74,7 +74,9 @@ export const setRoutes=()=>{
   if(storeMenus ){
     //拼装动态路由
     const manageRoute={path: '/', name:'Manage', component: () => import('../views/Manage.vue'), redirect: "/home", children: [
-        {path:"person",name:'个人信息',component:()=>import('../views/Person.vue')}
+        {path:"person",name:'个人信息',component:()=>import('../views/Person.vue')},
+        {path:"teachCourse",name:'所教课程',component:()=>import('../views/TeachCourse.vue')},
+        {path:"stuCourse",name:'所选课程',component:()=>import('../views/StuCourse.vue')}
 
       ] }
     const menus=JSON.parse(storeMenus)

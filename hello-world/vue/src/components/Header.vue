@@ -21,6 +21,12 @@
         <el-dropdown-item style="font-size: 14px; padding: 5px 0">
           <router-link to="/front/home">进入前台</router-link>
         </el-dropdown-item>
+        <el-dropdown-item style="font-size: 14px; padding: 5px 0" v-if="user.role==='ROLE_TEACHER'">
+          <router-link to="/teachCourse">所教课程</router-link>
+        </el-dropdown-item>
+        <el-dropdown-item style="font-size: 14px; padding: 5px 0" v-if="user.role==='ROLE_STUDENT'">
+          <router-link to="/stuCourse">所选课程</router-link>
+        </el-dropdown-item>
         <el-dropdown-item style="font-size: 14px; padding: 5px 0">
           <span style="text-decoration: none" @click="logout">退出</span>
         </el-dropdown-item>

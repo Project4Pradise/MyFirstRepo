@@ -161,6 +161,7 @@ export default {
       }).then(res => {
 
         this.tableData = res.data.records
+
         this.total = res.data.total
 
       })

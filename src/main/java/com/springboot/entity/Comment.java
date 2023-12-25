@@ -37,7 +37,7 @@ public class Comment implements Serializable {
       /**
      * 评论人id
      */
-      @TableField(value = "user_id")
+      @TableField("user_id")
       private Integer userId;
 
       /**

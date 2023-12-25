@@ -134,11 +134,7 @@ export default class Home extends Vue {
         }
       ]
     };
-/*    { value: 1048, name: 'Search Engine' },
-    { value: 735, name: 'Direct' },
-    { value: 580, name: 'Email' },
-    { value: 484, name: 'Union Ads' },
-    { value: 300, name: 'Video Ads' }*/
+
     this.request.get("/echarts/islogin").then((res:any)=>{
       Circlecoption.series[0].data=[
         {value:res.data[0],name:"登录中"},

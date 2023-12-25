@@ -22,7 +22,7 @@
         <el-button type="danger" slot="reference">批量删除 <i class="el-icon-remove-outline"></i></el-button>
       </el-popconfirm>
 
-      <el-button type="primary" @click="exp" class="ml-5">导出 <i class="el-icon-top"></i></el-button>
+
     </div>
 
     <el-table :data="tableData" border stripe :header-cell-class-name="'headerBg'"  @selection-change="handleSelectionChange">
@@ -35,7 +35,6 @@
           <el-tag type="primary" v-if="scope.row.role==='ROLE_ADMIN'">管理员</el-tag>
           <el-tag type="warning" v-if="scope.row.role==='ROLE_TEACHER'">老师</el-tag>
           <el-tag type="success" v-if="scope.row.role==='ROLE_STUDENT'">学生</el-tag>
-
         </template>
       </el-table-column>
       <el-table-column prop="email" label="邮箱"></el-table-column>
@@ -80,7 +79,6 @@
         <el-form-item label="角色">
           <el-select clearable v-model="form.role" placeholder="请选择角色 " style="width:100%" >
             <el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.flag" >
-
             </el-option>
 
           </el-select>
@@ -107,12 +105,24 @@
       <el-table :data="courses" border stripe>
         <el-table-column prop="name" label="课程名称"></el-table-column>
         <el-table-column prop="score" label="学分"></el-table-column>
+        <el-table-column prop="times" label="课时"></el-table-column>
+        <el-table-column label="是否上课"  >
+          <template slot-scope="scope" >
+            <el-switch v-model="scope.row.state" active-color="#13ce66" inactive-color="#ccc" :disabled="true"  ></el-switch>
+          </template>
+        </el-table-column>
       </el-table>
     </el-dialog>
     <el-dialog title="选课信息" :visible.sync="StuVis" width="30%" >
       <el-table :data="stuCourses" border stripe>
         <el-table-column prop="name" label="课程名称"></el-table-column>
         <el-table-column prop="score" label="学分"></el-table-column>
+        <el-table-column prop="times" label="课时"></el-table-column>
+        <el-table-column label="是否上课"  >
+          <template slot-scope="scope" >
+            <el-switch v-model="scope.row.state" active-color="#13ce66" inactive-color="#ccc" :disabled="true"  ></el-switch>
+          </template>
+        </el-table-column>
       </el-table>
     </el-dialog>
   </div>

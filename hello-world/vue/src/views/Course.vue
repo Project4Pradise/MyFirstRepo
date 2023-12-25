@@ -30,9 +30,9 @@
       <el-table-column prop="times" label="上课时间"></el-table-column>
       <el-table-column prop="teacher" label="授课老师"></el-table-column>
 
-      <el-table-column label="启用">
-        <template slot-scope="scope">
-          <el-switch v-model="scope.row.state" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(scope.row)"></el-switch>
+      <el-table-column label="启用"  >
+        <template slot-scope="scope" >
+          <el-switch v-model="scope.row.state" active-color="#13ce66" inactive-color="#ccc" @change="changeEnable(scope.row)" v-if="user.role==='ROLE_ADMIN'"></el-switch>
         </template>
       </el-table-column>
       <el-table-column label="操作"  width="280" align="center">

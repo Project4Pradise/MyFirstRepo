@@ -14,18 +14,27 @@
         <result column="islogin" property="islogin"/>
         <result column="role" property="role"/>
     <collection  property="courses" javaType="java.util.ArrayList" ofType="com.springboot.entity.Course">
+        <result column="teacherId" property="id"/>
         <result column="teacherCourseName" property="name"/>
         <result column="teacherScore" property="score"/>
+        <result column="teacherState" property="state"/>
+        <result column="teacherTimes" property="times"/>
     </collection>
         <collection  property="stuCourses" javaType="java.util.ArrayList" ofType="com.springboot.entity.Course">
+            <result column="stuId" property="id"/>
             <result column="stuCourseName" property="name"/>
             <result column="stuScore" property="score"/>
+            <result column="stuState" property="state"/>
+            <result column="stuTimes" property="times"/>
         </collection>
     </resultMap>
 
 
     <select id="findPage" resultMap="pageUser">
-        select sys_user.* ,sc.name as stuCourseName,tc.name as teacherCourseName,tc.score as teacherScore,sc.score as stuScore from sys_user
+        select sys_user.* ,tc.id as teacherId,sc.id as stuId,sc.name as stuCourseName,tc.name as teacherCourseName,
+               tc.state as teacherState,sc.state as stuState,
+               tc.times as teacherTimes,sc.times as stuTimes,
+               tc.score as teacherScore,sc.score as stuScore from sys_user
         left join  student_course
         on sys_user.id=student_course.student_id
         left join course sc

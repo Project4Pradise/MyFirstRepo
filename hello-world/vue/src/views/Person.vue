@@ -26,6 +26,10 @@
       <el-form-item label="地址">
         <el-input v-model="form.address" autocomplete="off"></el-input>
       </el-form-item>
+      <el-form-item label="密码">
+        <el-input v-model="form.password" autocomplete="off"></el-input>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="save">确 定</el-button>
       </el-form-item>

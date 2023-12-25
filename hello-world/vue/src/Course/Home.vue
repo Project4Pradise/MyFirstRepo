@@ -140,10 +140,12 @@ export default class Home extends Vue {
     { value: 484, name: 'Union Ads' },
     { value: 300, name: 'Video Ads' }*/
     this.request.get("/echarts/islogin").then((res:any)=>{
+
       Circlecoption.series[0].data=[
         {value:res.data[0],name:"登录中"},
         {value:res.data[1],name:"下线中"}
       ]as any
+
       CircleChart.setOption(Circlecoption);
 
     })
